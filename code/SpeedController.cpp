@@ -10,7 +10,8 @@
 #include <geometry_msgs/Twist.h>
 #include <SpeedController/SpeedController.h>
 #include <PID/PID.h>
- 
+#include <nr3/nr3.h> 
+#include <nr3/adapt.h> 
 using namespace std;
  
 SpeedController::SpeedController(ros::NodeHandle &nh){
@@ -173,6 +174,22 @@ double SpeedController::tau(double x, double y, double theta, double psi_t, doub
     double A = 1.40;
     double r = sqrt(pow(x,2)+pow(y,2));
     return ((-var_phi(A,x,y)/r)*(-x*sin(theta)+y*cos(theta))*(v/(1+pow(v,2)))*1/(1+pow(psi_t,2))-tanh(psi_t));
+}
+
+Doub SpeedController::bumpf (Doub x){
+    double xc = (x<=0);
+    double xm = x * (1 - xc);
+    return exp(-1 / xm) * (1 - xc);
+}
+
+double mybump(double t, double L, double M){
+    double x = (pow(t,2) - pow(L,2))/(pow(M,2) - pow(L,2));
+    return 1 - bumpf(x)/(bumpf(x) + bumpf(1 -x));
+}
+
+double satsm (double x, double L, double M){
+    Adapt Adapt(1e-8);
+
 }
  
 void SpeedController::Move_Han(double x0, double y0, double theta0, double w0, double v0){
