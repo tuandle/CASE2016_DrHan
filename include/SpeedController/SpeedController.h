@@ -11,6 +11,7 @@
 #include <geometry_msgs/Twist.h>
 #include <nr3/nr3.h> 
 #include <nr3/adapt.h> 
+#include <cmath>
 
 class SpeedController {
 	public:
@@ -24,17 +25,19 @@ class SpeedController {
 		double var_theta(double, double); // var_theta_const, integral omega
 		double var_phi(double, double, double); //A, x, y
 		//double psi(double, double); //theta, var_theta
-		Doub satsm(double,double,double); // psi, const1, const2
-		Doub mybump(double,double,double);
-		Doub bumpf(double);
+		//Doub satsm(Doub); // psi, const1, const2
+		//Doub mybump(Doub);
+		Doub bumpf(Doub);
 		double uctr(double,double,double,double,double); // var_phi, r, x, y, theta, linear velocity, psi
 		double tau(double, double, double, double,double);//var_phi, r, x, y, theta, linear v, psi, satm, const1, const2
 		double omega(double,double,double,double);//x, y, theta, linear v, r
 		void Move_Han(double,double,double,double,double); // x0, y0, theta_0,v_0, omega_0,
 		//void ComputeError();
 		//void setKpKiKd();
-
-	
+		
+		struct bumpf;
+		struct mybump;
+		
 	private:	
 		ros::NodeHandle nh_;
 		ros::Publisher cmd_vel_pub_;
