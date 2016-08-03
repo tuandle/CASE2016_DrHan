@@ -25,9 +25,9 @@ class SpeedController {
 		double var_theta(double, double); // var_theta_const, integral omega
 		double var_phi(double, double, double); //A, x, y
 		//double psi(double, double); //theta, var_theta
-		//Doub satsm(Doub); // psi, const1, const2
-		//Doub mybump(Doub);
 		Doub bumpf(Doub);
+		Doub mybump(Doub);		
+		Doub satsm(Doub); // psi, const1, const2
 		double uctr(double,double,double,double,double); // var_phi, r, x, y, theta, linear velocity, psi
 		double tau(double, double, double, double,double);//var_phi, r, x, y, theta, linear v, psi, satm, const1, const2
 		double omega(double,double,double,double);//x, y, theta, linear v, r
@@ -35,8 +35,8 @@ class SpeedController {
 		//void ComputeError();
 		//void setKpKiKd();
 		
-		struct bumpf;
-		struct mybump;
+		//struct bumpf;
+		//struct mybump;
 		
 	private:	
 		ros::NodeHandle nh_;

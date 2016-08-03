@@ -177,19 +177,27 @@ double SpeedController::tau(double x, double y, double theta, double psi_t, doub
     return ((-var_phi(A,x,y)/r)*(-x*sin(theta)+y*cos(theta))*(v/(1+pow(v,2)))*1/(1+pow(psi_t,2))-tanh(psi_t));
 }
 
-/*
 Doub SpeedController::bumpf (Doub x){
     Doub xc = (x<=0);
     Doub xm = x * (1 - xc);
     return (exp(-1 / xm) * (1 - xc));
 }
 
-Doub SpeedController::mybump(Doub t){
+Doub SpeedController::mybump(const Doub t){
     Doub L=1, M=1.1;
+    
     Doub xx = (pow(t,2) - pow(L,2))/(pow(M,2) - pow(L,2));
-    return (1 - bumpf(xx)/(bumpf(xx) + bumpf(1 -xx)));
+    
+    Doub xc = (xx<=0);
+    Doub xm = xx * (1 - xc);
+
+    Doub xcc = ((1-xx)<=0);
+    Doub xmm = (1-xx) * (1 - xcc);
+
+    //return (1 - bumpf(xx)/(bumpf(xx) + bumpf(1 -xx)));
+    return (1 - (exp(-1 / xm) * (1 - xc)))/((exp(-1 / xm) * (1 - xc)) + (exp(-1 / xmm) * (1 - xcc)));
 }
-*/
+/*
 struct SpeedController::bumpf{
     Doub operator()(const Doub &x){
         Doub xc = (x<=0);
@@ -205,7 +213,8 @@ struct SpeedController::mybump{
         return (1 - mybumpf(xx)/(mybumpf(xx) + mybumpf(1 -xx)));
     }
 };
-Doub SpeedController::satsm (Doub x){
+*/
+Doub SpeedController::satsm (const Doub x){
     Doub L=1, M=1.1;
     Adapt Adapt(1e-8);
     Doub a = 0.0, s;
