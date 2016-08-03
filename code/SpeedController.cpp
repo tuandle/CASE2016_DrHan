@@ -187,15 +187,15 @@ Doub SpeedController::mybump(const Doub t){
     Doub L=1, M=1.1;
     
     Doub xx = (pow(t,2) - pow(L,2))/(pow(M,2) - pow(L,2));
-    
+    /*
     Doub xc = (xx<=0);
     Doub xm = xx * (1 - xc);
 
     Doub xcc = ((1-xx)<=0);
     Doub xmm = (1-xx) * (1 - xcc);
-
-    //return (1 - bumpf(xx)/(bumpf(xx) + bumpf(1 -xx)));
-    return (1 - (exp(-1 / xm) * (1 - xc)))/((exp(-1 / xm) * (1 - xc)) + (exp(-1 / xmm) * (1 - xcc)));
+    */
+    return (1 - bumpf(xx)/(bumpf(xx) + bumpf(1 -xx)));
+    //return (1 - (exp(-1 / xm) * (1 - xc)))/((exp(-1 / xm) * (1 - xc)) + (exp(-1 / xmm) * (1 - xcc)));
 }
 /*
 struct SpeedController::bumpf{
@@ -216,13 +216,10 @@ struct SpeedController::mybump{
 */
 Doub SpeedController::satsm (const Doub x){
     Doub L=1, M=1.1;
-    Adapt Adapt(1e-8);
-    Doub a = 0.0, s;
-    //Doub myfunc = mybump(x,L,M);
-    s = Adapt.integrate(mybump,a,x);
+    
     return s;
 }
- 
+
 void SpeedController::Move_Han(double x0, double y0, double theta0, double w0, double v0){
     ros::Rate rate(1000);
     listener_.waitForTransform("/world", "/irobot1", ros::Time(0), ros::Duration(1));
@@ -249,8 +246,8 @@ void SpeedController::Move_Han(double x0, double y0, double theta0, double w0, d
 
     ofstream fout;
     double t_start = ros::Time::now().toSec(); // starting time
-    fout.open("test_12");
-    fout << "v_ref: 0.39; ros rate: 100; ros sleep 0.1 second " <<"\n" ;
+    fout.open("test_13");
+    fout << "v_ref: 0.5; ros rate: 100; ros sleep 0.1 second " <<"\n" ;
 
     while (nh_.ok()){
         try{
